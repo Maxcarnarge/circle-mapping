@@ -2,14 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Fruit Tree System - App Builder</title>
+    <title>Fruit Tree System Builder</title>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <style>
         :root { 
             --link-width: 1.5px; 
             --link-opacity: 0.3; 
-            
-            /* Dark Mode Palette */
             --bg-main: #414142;
             --bg-sidebar: #2b2b2c;
             --panel-bg: #363637;
@@ -17,72 +15,39 @@
             --text-main: #f0f0f0;
             --text-muted: #aaaaaa;
             --accent: #2A9D8F;
-            --accent-hover: #21867a;
             --danger: #E63946;
         }
-        
         body { font-family: Helvetica Neue, Helvetica, Arial, sans-serif; display: flex; margin: 0; background-color: var(--bg-main); color: var(--text-main); height: 100vh; overflow: hidden; }
-        
-        /* Sidebar Styling */
         #sidebar { width: 360px; background-color: var(--bg-sidebar); padding: 15px 20px; box-shadow: 2px 0 10px rgba(0,0,0,0.5); overflow-y: auto; display: flex; flex-direction: column; z-index: 10; border-right: 1px solid #222; }
-        #sidebar::-webkit-scrollbar { width: 8px; }
-        #sidebar::-webkit-scrollbar-thumb { background-color: #555; border-radius: 4px; }
-        
-        h2 { margin-top: 10px; font-size: 14px; color: var(--text-main); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 2px solid var(--border-color); padding-bottom: 5px; }
-        
+        h2 { margin-top: 10px; font-size: 13px; color: var(--text-main); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid var(--border-color); padding-bottom: 5px; }
         .control-group { margin-bottom: 15px; padding: 12px; background-color: var(--panel-bg); border-radius: 8px; border: 1px solid var(--border-color); }
-        .control-group label { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-muted); font-weight: 700; margin-bottom: 6px; }
-        .control-group span { color: var(--accent); font-weight: bold; }
-        input[type=range] { width: 100%; cursor: pointer; accent-color: var(--accent); margin-bottom: 5px; background: transparent; }
-        select, .text-input { width: 100%; padding: 8px; box-sizing: border-box; border-radius: 4px; border: 1px solid var(--border-color); background-color: var(--bg-main); font-family: inherit; font-size: 13px; font-weight:bold; color: var(--text-main); }
-        
+        .control-group label { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted); font-weight: 700; margin-bottom: 6px; }
+        .control-group span { color: var(--accent); }
+        input[type=range] { width: 100%; cursor: pointer; accent-color: var(--accent); background: transparent; }
+        select, .text-input { width: 100%; padding: 8px; box-sizing: border-box; border-radius: 4px; border: 1px solid var(--border-color); background-color: var(--bg-main); color: var(--text-main); font-size: 13px; }
         .mode-toggle { display: flex; gap: 10px; margin-bottom: 10px; }
-        .mode-btn { flex: 1; padding: 10px; text-align: center; background: var(--panel-bg); color: var(--text-muted); font-weight: bold; border-radius: 6px; cursor: pointer; border: 1px solid var(--border-color); transition: 0.2s; font-size: 14px; }
+        .mode-btn { flex: 1; padding: 10px; text-align: center; background: var(--panel-bg); color: var(--text-muted); font-weight: bold; border-radius: 6px; cursor: pointer; border: 1px solid var(--border-color); font-size: 13px; transition: 0.2s; }
         .mode-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
         .mode-btn.edit-active { background: var(--danger); color: white; border-color: var(--danger); animation: pulse 2s infinite; }
         @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(230, 57, 70, 0.4); } 70% { box-shadow: 0 0 0 8px rgba(230, 57, 70, 0); } 100% { box-shadow: 0 0 0 0 rgba(230, 57, 70, 0); } }
-
         #edit-tools { display: none; margin-bottom: 10px; padding: 10px; background-color: rgba(230, 57, 70, 0.1); border-radius: 8px; border: 1px solid var(--danger); }
-        .radio-container { display: flex; flex-direction: column; gap: 8px; margin-top: 5px; }
-        .radio-container label { font-size: 13px; color: var(--text-main); cursor: pointer; display: flex; align-items: center; font-weight: 600; }
-        .radio-container input { margin-right: 8px; accent-color: var(--danger); }
-
         .color-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; padding: 6px 10px; background-color: var(--panel-bg); border-radius: 6px; border: 1px solid var(--border-color); }
-        .group-name-input { border: none; background: transparent; font-size: 13px; color: var(--text-main); font-weight: 600; width: 200px; outline: none; border-bottom: 1px dashed transparent; transition: 0.2s; cursor: text; }
-        .group-name-input:focus { border-bottom: 1px dashed var(--accent); }
-        input[type="color"] { border: 1px solid var(--border-color); border-radius: 4px; width: 25px; height: 22px; cursor: pointer; padding: 0; background: none; flex-shrink: 0; }
-        
-        .export-panel { margin-top: 15px; padding-top: 15px; display: flex; flex-direction: column; gap: 8px; border-top: 1px solid var(--border-color); }
+        .group-name-input { border: none; background: transparent; font-size: 13px; color: var(--text-main); font-weight: 600; width: 200px; outline: none; border-bottom: 1px dashed transparent; }
+        .group-name-input:focus { border-bottom-color: var(--accent); }
+        input[type="color"] { border: 1px solid var(--border-color); border-radius: 4px; width: 25px; height: 22px; cursor: pointer; padding: 0; background: none; }
+        .export-panel { margin-top: auto; padding-top: 15px; display: flex; flex-direction: column; gap: 8px; border-top: 1px solid var(--border-color); }
         button { background-color: #555; color: white; border: none; padding: 10px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: bold; transition: 0.2s; }
         button:hover { background-color: #777; }
         .save-btn { background-color: #F4A261; color: #111; }
-        .save-btn:hover { background-color: #E9C46A; }
-        .add-btn { background-color: var(--accent); color: white; margin-top: 8px; width: 100%; }
-        .add-btn:hover { background-color: var(--accent-hover); }
-        
         #main-content { flex-grow: 1; display: flex; justify-content: center; align-items: center; background-color: var(--bg-main); position: relative; overflow: hidden; }
-        
-        /* D3 Elements */
-        .node text { font-size: 13px; font-weight: 600; cursor: pointer; transition: opacity 0.2s; user-select: none; text-shadow: 0px 2px 4px rgba(0,0,0,0.8); }
-        .node circle { cursor: pointer; transition: 0.2s; }
+        .node text { font-size: 13px; font-weight: 600; cursor: pointer; user-select: none; text-shadow: 0px 2px 4px rgba(0,0,0,0.8); transition: opacity 0.2s; }
         .link { fill: none; transition: stroke-opacity 0.2s, stroke-width 0.2s; mix-blend-mode: screen; }
-        
         .link--target { stroke-opacity: 1 !important; stroke-width: calc(var(--link-width) + 2.5px) !important; z-index: 100; mix-blend-mode: normal; }
-        .node--hovered { font-weight: 800 !important; font-size: 15px !important; }
         .node--fade { opacity: 0.1; }
         .link--fade { stroke-opacity: 0.02 !important; }
         .temp-drag-line { fill: none; stroke: var(--danger); stroke-width: 3px; pointer-events: none; }
-        
-        #edit-toast { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); background: #e0e0e0; color: #111; padding: 10px 20px; border-radius: 20px; font-weight: bold; opacity: 0; transition: 0.3s; pointer-events: none; z-index: 1000; text-align: center; line-height: 1.4; font-size: 14px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
-        
-        /* Modal */
         #node-modal-backdrop { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); z-index: 999; display: none; }
         #node-modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--bg-sidebar); padding: 25px; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.8); z-index: 1000; display: none; width: 320px; border: 1px solid var(--border-color); }
-        #node-modal h3 { margin-top: 0; color: var(--text-main); margin-bottom: 15px; font-size: 18px; border-bottom: none; }
-        #node-modal label { display: block; font-size: 12px; font-weight: bold; color: var(--text-muted); margin-bottom: 5px; }
-        #modal-btn-save { background: var(--accent); flex: 1; margin-right: 5px; }
-        #modal-btn-delete { background: var(--danger); flex: 1; margin-right: 5px; }
-        #modal-btn-cancel { background: #555; flex: 1; }
     </style>
 </head>
 <body>
@@ -90,36 +55,35 @@
 <div id="node-modal-backdrop"></div>
 <div id="node-modal">
     <h3>✏️ Edit Node</h3>
-    <label>Node Name</label>
+    <label style="display:block; font-size:11px; margin-bottom:5px; color:var(--text-muted)">NODE NAME</label>
     <input type="text" id="modal-node-name" class="text-input" style="margin-bottom: 15px;">
-    <label>Category Group</label>
+    <label style="display:block; font-size:11px; margin-bottom:5px; color:var(--text-muted)">CATEGORY GROUP</label>
     <select id="modal-node-group" style="margin-bottom: 25px;"></select>
-    <div style="display: flex; justify-content: space-between;">
-        <button id="modal-btn-save">Save</button>
-        <button id="modal-btn-delete">Delete</button>
-        <button id="modal-btn-cancel">Cancel</button>
+    <div style="display: flex; gap:10px">
+        <button id="modal-btn-save" style="background:var(--accent); flex:1">Save</button>
+        <button id="modal-btn-delete" style="background:var(--danger); flex:1">Delete</button>
+        <button id="modal-btn-cancel" style="background:#555; flex:1">Cancel</button>
     </div>
 </div>
 
 <div id="sidebar">
     <div class="mode-toggle">
-        <div id="btn-view" class="mode-btn active" onclick="setMode('view')">👁 View Mode</div>
-        <div id="btn-edit" class="mode-btn" onclick="setMode('edit')">✏️ Edit Mode</div>
+        <div id="btn-view" class="mode-btn active" onclick="setMode('view')">👁 View</div>
+        <div id="btn-edit" class="mode-btn" onclick="setMode('edit')">✏️ Edit</div>
     </div>
 
     <div id="edit-tools">
-        <label style="font-size: 13px; font-weight: bold; color: var(--danger);">DRAWING MODE:</label>
-        <div class="radio-container">
-            <label><input type="radio" name="conn-type" value="1" checked> ▬▬ Primary (Solid)</label>
-            <label><input type="radio" name="conn-type" value="2"> ╍╍╍╍ Secondary (Dotted)</label>
+        <label style="font-size: 10px; font-weight: bold; color: var(--danger);">DRAWING MODE:</label>
+        <div class="radio-container" style="display:flex; flex-direction:column; gap:8px; margin-top:5px">
+            <label style="font-size:12px"><input type="radio" name="conn-type" value="1" checked> Primary (Solid)</label>
+            <label style="font-size:12px"><input type="radio" name="conn-type" value="2"> Secondary (Dotted)</label>
         </div>
     </div>
 
-    <h2>Geometry & Routing</h2>
+    <h2>Highway & Geometry</h2>
     <div class="control-group">
         <label>Ring Radius <span id="ring-size-val">1.0x</span></label>
         <input type="range" id="ring-size-slider" min="0.4" max="1.5" step="0.05" value="1.0">
-
         <label style="margin-top:10px;">Bundle Tension <span id="tension-val">0.45</span></label>
         <input type="range" id="tension-slider" min="0" max="1" step="0.01" value="0.45">
     </div>
@@ -128,13 +92,8 @@
     <div class="control-group">
         <label>Node Size <span id="node-size-val">5.0</span></label>
         <input type="range" id="node-size-slider" min="2" max="15" step="0.5" value="5">
-        
-        <label style="margin-top:10px;">Label Distance <span id="label-space-val">10px</span></label>
-        <input type="range" id="label-space-slider" min="2" max="40" step="1" value="10">
-
         <label style="margin-top:10px;">Node Spacing <span id="node-space-val">1.0</span></label>
         <input type="range" id="node-space-slider" min="0.1" max="5" step="0.1" value="1">
-        
         <label style="margin-top:10px;">Group Spacing <span id="group-space-val">2.0</span></label>
         <input type="range" id="group-space-slider" min="0.1" max="10" step="0.1" value="2">
     </div>
@@ -143,28 +102,25 @@
     <div class="control-group">
         <label>Line Style</label>
         <select id="line-style-selector" style="margin-bottom: 10px;">
-            <option value="grey">Ghost Lines (Default)</option>
+            <option value="grey">Ghost Lines</option>
             <option value="source">Source Color</option>
-            <option value="gradient">Dynamic Gradient</option>
+            <option value="gradient" selected>Dynamic Gradient</option>
         </select>
-        
-        <label>Line Thickness <span id="thickness-val">1.5px</span></label>
+        <label>Thickness <span id="thickness-val">1.5px</span></label>
         <input type="range" id="thickness-slider" min="0.1" max="5" step="0.1" value="1.5">
-        
         <label style="margin-top:10px;">Base Opacity <span id="opacity-val">0.30</span></label>
         <input type="range" id="opacity-slider" min="0.01" max="1" step="0.01" value="0.30">
     </div>
 
-    <h2>Manage Nodes</h2>
+    <h2>Add Node</h2>
     <div class="control-group">
-        <input type="text" id="new-node-name" class="text-input" placeholder="New Node Name..." style="margin-bottom: 8px;">
+        <input type="text" id="new-node-name" class="text-input" placeholder="Name..." style="margin-bottom: 8px;">
         <select id="new-node-category"></select>
-        <button id="btn-add-node" class="add-btn">➕ Add Node</button>
+        <button id="btn-add-node" style="background:var(--accent); width:100%; margin-top:8px">➕ Add Node</button>
     </div>
 
     <h2>Category Colors</h2>
     <div id="color-controls"></div>
-    <div style="font-size: 11px; color: #888; text-align: center; margin-top: -5px; font-style: italic;">(Click text to rename group)</div>
     
     <div class="export-panel">
         <button class="save-btn" onclick="exportCSV()">💾 Save Connections (CSV)</button>
@@ -174,138 +130,72 @@
 </div>
 
 <div id="main-content">
-    <div id="edit-toast">Drag from one node to another to connect!<br>Double-Click a node to Edit/Rename/Move/Delete.</div>
+    <div id="edit-toast" style="opacity:0; pointer-events:none">Edit Mode: Drag to connect / Double-click to Edit</div>
     <div id="chart"></div>
 </div>
 
 <script>
     // --- Data State ---
     let nodesData = [{"id": "Legal (Red).Legislation", "name": "Legislation", "group": "Legal (Red)", "imports": [{"id": "Legal (Red).Border Control", "type": 1}, {"id": "Legal (Red).Quarantine", "type": 1}, {"id": "Legal (Red).Insurance", "type": 1}, {"id": "Plant (Yellow).Biotech", "type": 1}, {"id": "Logistics (Orange).Database", "type": 1}, {"id": "Logistics (Orange).Waste", "type": 1}, {"id": "Logistics (Orange).Recycling", "type": 1}, {"id": "Deliver (Blue).Driver", "type": 1}, {"id": "Deliver (Blue).Delivery Staff", "type": 1}, {"id": "Deliver (Blue).Transportation Company", "type": 1}, {"id": "Pack (Pink).Packaging", "type": 1}, {"id": "Pack (Pink).Packaging Distributor", "type": 1}, {"id": "Pack (Pink).Warehouse Workers", "type": 1}]}, {"id": "Legal (Red).Border Control", "name": "Border Control", "group": "Legal (Red)", "imports": [{"id": "Legal (Red).Legislation", "type": 1}, {"id": "Legal (Red).Quarantine", "type": 1}, {"id": "Logistics (Orange).Database", "type": 1}, {"id": "Logistics (Orange).Tracking Goods", "type": 1}, {"id": "Deliver (Blue).Driver", "type": 1}, {"id": "Pack (Pink).Packaging", "type": 1}]}, {"id": "Legal (Red).Quarantine", "name": "Quarantine", "group": "Legal (Red)", "imports": [{"id": "Legal (Red).Legislation", "type": 1}, {"id": "Legal (Red).Border Control", "type": 1}, {"id": "Plant (Yellow).Biotech", "type": 1}, {"id": "Logistics (Orange).Database", "type": 1}, {"id": "Logistics (Orange).Tracking Goods", "type": 1}, {"id": "Deliver (Blue).Driver", "type": 1}, {"id": "Pack (Pink).Packaging", "type": 1}, {"id": "Pack (Pink).Warehouse Workers", "type": 1}]}, {"id": "Legal (Red).Insurance", "name": "Insurance", "group": "Legal (Red)", "imports": [{"id": "Legal (Red).Legislation", "type": 1}, {"id": "Legal (Red).Onboarding", "type": 1}, {"id": "Logistics (Orange).Database", "type": 1}, {"id": "Logistics (Orange).Tracking Goods", "type": 1}, {"id": "Logistics (Orange).Quotes", "type": 1}, {"id": "Logistics (Orange).Payment", "type": 1}, {"id": "Deliver (Blue).Delivery", "type": 1}, {"id": "Deliver (Blue).Driver", "type": 1}, {"id": "Deliver (Blue).Delivery Staff", "type": 1}, {"id": "Deliver (Blue).Transportation Company", "type": 1}, {"id": "Deliver (Blue).Handling Equipment", "type": 1}, {"id": "Pack (Pink).Trolleys", "type": 1}, {"id": "Pack (Pink).Warehouse Workers", "type": 1}]}, {"id": "Legal (Red).Onboarding", "name": "Onboarding", "group": "Legal (Red)", "imports": [{"id": "Legal (Red).Insurance", "type": 1}, {"id": "Logistics (Orange).Database", "type": 1}, {"id": "Logistics (Orange).Payment", "type": 1}, {"id": "Logistics (Orange).Stocktake", "type": 1}, {"id": "Deliver (Blue).Driver", "type": 1}, {"id": "Deliver (Blue).Delivery Staff", "type": 1}, {"id": "Deliver (Blue).Transportation Company", "type": 1}, {"id": "Pack (Pink).Supplier", "type": 1}, {"id": "Pack (Pink).Warehouse Workers", "type": 1}]}, {"id": "Plant (Yellow).Rootstock", "name": "Rootstock", "group": "Plant (Yellow)", "imports": [{"id": "Plant (Yellow).Grafting", "type": 1}, {"id": "Plant (Yellow).Deciduous", "type": 1}, {"id": "Plant (Yellow).Germination", "type": 1}, {"id": "Plant (Yellow).Irrigation", "type": 1}, {"id": "Plant (Yellow).Fertilising", "type": 1}, {"id": "Plant (Yellow).Repotting", "type": 1}, {"id": "Plant (Yellow).In Season Plants", "type": 1}, {"id": "Plant (Yellow).Biotech", "type": 1}, {"id": "Pack (Pink).Supplier", "type": 1}]}, {"id": "Plant (Yellow).Grafting", "name": "Grafting", "group": "Plant (Yellow)", "imports": [{"id": "Plant (Yellow).Rootstock", "type": 1}, {"id": "Plant (Yellow).Deciduous", "type": 1}, {"id": "Plant (Yellow).Germination", "type": 1}, {"id": "Plant (Yellow).Fertilising", "type": 1}, {"id": "Plant (Yellow).Repotting", "type": 1}, {"id": "Plant (Yellow).In Season Plants", "type": 1}, {"id": "Plant (Yellow).Biotech", "type": 1}, {"id": "Logistics (Orange).Database", "type": 1}]}, {"id": "Plant (Yellow).Deciduous", "name": "Deciduous", "group": "Plant (Yellow)", "imports": [{"id": "Plant (Yellow).Rootstock", "type": 1}, {"id": "Plant (Yellow).Grafting", "type": 1}, {"id": "Plant (Yellow).Germination", "type": 1}, {"id": "Plant (Yellow).Fertilising", "type": 1}, {"id": "Plant (Yellow).In Season Plants", "type": 1}, {"id": "Plant (Yellow).Acclimatisation", "type": 1}, {"id": "Deliver (Blue).Driver", "type": 1}, {"id": "Pack (Pink).Trolleys", "type": 1}]}, {"id": "Plant (Yellow).Germination", "name": "Germination", "group": "Plant (Yellow)", "imports": [{"id": "Plant (Yellow).Rootstock", "type": 1}, {"id": "Plant (Yellow).Grafting", "type": 1}, {"id": "Plant (Yellow).Deciduous", "type": 1}, {"id": "Plant (Yellow).Irrigation", "type": 1}, {"id": "Plant (Yellow).In Season Plants", "type": 1}]}, {"id": "Plant (Yellow).Irrigation", "name": "Irrigation", "group": "Plant (Yellow)", "imports": [{"id": "Plant (Yellow).Rootstock", "type": 1}, {"id": "Plant (Yellow).Germination", "type": 1}, {"id": "Plant (Yellow).Fertilising", "type": 1}, {"id": "Plant (Yellow).Repotting", "type": 1}, {"id": "Plant (Yellow).In Season Plants", "type": 1}]}, {"id": "Plant (Yellow).Fertilising", "name": "Fertilising", "group": "Plant (Yellow)", "imports": [{"id": "Plant (Yellow).Rootstock", "type": 1}, {"id": "Plant (Yellow).Grafting", "type": 1}, {"id": "Plant (Yellow).Deciduous", "type": 1}, {"id": "Plant (Yellow).Irrigation", "type": 1}, {"id": "Plant (Yellow).Repotting", "type": 1}, {"id": "Plant (Yellow).In Season Plants", "type": 1}, {"id": "Plant (Yellow).Biotech", "type": 1}, {"id": "Logistics (Orange).Waste", "type": 1}, {"id": "Logistics (Orange).Recycling", "type": 1}]}, {"id": "Plant (Yellow).Repotting", "name": "Repotting", "group": "Plant (Yellow)", "imports": [{"id": "Plant (Yellow).Rootstock", "type": 1}, {"id": "Plant (Yellow).Grafting", "type": 1}, {"id": "Plant (Yellow).Irrigation", "type": 1}, {"id": "Plant (Yellow).Fertilising", "type": 1}, {"id": "Plant (Yellow).In Season Plants", "type": 1}, {"id": "Logistics (Orange).Waste", "type": 1}, {"id": "Deliver (Blue).Handling Equipment", "type": 1}, {"id": "Pack (Pink).Packer", "type": 1}]}, {"id": "Plant (Yellow).In Season Plants", "name": "In Season Plants", "group": "Plant (Yellow)", "imports": [{"id": "Plant (Yellow).Rootstock", "type": 1}, {"id": "Plant (Yellow).Grafting", "type": 1}, {"id": "Plant (Yellow).Deciduous", "type": 1}, {"id": "Plant (Yellow).Germination", "type": 1}, {"id": "Plant (Yellow).Irrigation", "type": 1}, {"id": "Plant (Yellow).Fertilising", "type": 1}, {"id": "Plant (Yellow).Repotting", "type": 1}, {"id": "Logistics (Orange).Database", "type": 1}, {"id": "Logistics (Orange).Stocktake", "type": 1}, {"id": "Deliver (Blue).Retailer", "type": 1}, {"id": "Pack (Pink).Manufacturer", "type": 1}]}, {"id": "Plant (Yellow).Biotech", "name": "Biotech", "group": "Plant (Yellow)", "imports": [{"id": "Legal (Red).Legislation", "type": 1}, {"id": "Legal (Red).Quarantine", "type": 1}, {"id": "Plant (Yellow).Rootstock", "type": 1}, {"id": "Plant (Yellow).Grafting", "type": 1}, {"id": "Plant (Yellow).Fertilising", "type": 1}, {"id": "Logistics (Orange).Database", "type": 1}]}, {"id": "Plant (Yellow).Acclimatisation", "name": "Acclimatisation", "group": "Plant (Yellow)", "imports": [{"id": "Plant (Yellow).Deciduous", "type": 1}, {"id": "Deliver (Blue).Delivery", "type": 1}, {"id": "Deliver (Blue).Consumer", "type": 1}, {"id": "Deliver (Blue).Retailer", "type": 1}]}, {"id": "Logistics (Orange).Database", "name": "Database", "group": "Logistics (Orange)", "imports": [{"id": "Legal (Red).Legislation", "type": 1}, {"id": "Legal (Red).Border Control", "type": 1}, {"id": "Legal (Red).Quarantine", "type": 1}, {"id": "Legal (Red).Insurance", "type": 1}, {"id": "Legal (Red).Onboarding", "type": 1}, {"id": "Plant (Yellow).Grafting", "type": 1}, {"id": "Plant (Yellow).In Season Plants", "type": 1}, {"id": "Plant (Yellow).Biotech", "type": 1}, {"id": "Logistics (Orange).Online", "type": 1}, {"id": "Logistics (Orange).Tracking Goods", "type": 1}, {"id": "Logistics (Orange).Quotes", "type": 1}, {"id": "Logistics (Orange).Payment", "type": 1}, {"id": "Logistics (Orange).Stocktake", "type": 1}, {"id": "Deliver (Blue).Delivery", "type": 1}, {"id": "Deliver (Blue).Consumer", "type": 1}, {"id": "Deliver (Blue).Retailer", "type": 1}, {"id": "Deliver (Blue).Driver", "type": 1}, {"id": "Deliver (Blue).Delivery Staff", "type": 1}, {"id": "Deliver (Blue).Transportation Company", "type": 1}, {"id": "Pack (Pink).Supplier", "type": 1}, {"id": "Pack (Pink).Warehouse Workers", "type": 1}]}, {"id": "Logistics (Orange).Online", "name": "Online", "group": "Logistics (Orange)", "imports": [{"id": "Logistics (Orange).Database", "type": 1}, {"id": "Logistics (Orange).Tracking Goods", "type": 1}, {"id": "Logistics (Orange).Quotes", "type": 1}, {"id": "Logistics (Orange).Payment", "type": 1}, {"id": "Deliver (Blue).Delivery", "type": 1}, {"id": "Deliver (Blue).Consumer", "type": 1}, {"id": "Deliver (Blue).Retailer", "type": 1}]}, {"id": "Logistics (Orange).Tracking Goods", "name": "Tracking Goods", "group": "Logistics (Orange)", "imports": [{"id": "Legal (Red).Border Control", "type": 1}, {"id": "Legal (Red).Quarantine", "type": 1}, {"id": "Legal (Red).Insurance", "type": 1}, {"id": "Logistics (Orange).Database", "type": 1}, {"id": "Logistics (Orange).Online", "type": 1}, {"id": "Logistics (Orange).Stocktake", "type": 1}, {"id": "Deliver (Blue).Delivery", "type": 1}, {"id": "Deliver (Blue).Consumer", "type": 1}, {"id": "Deliver (Blue).Driver", "type": 1}, {"id": "Deliver (Blue).Delivery Staff", "type": 1}, {"id": "Deliver (Blue).Transportation Company", "type": 1}, {"id": "Pack (Pink).Packaging", "type": 1}, {"id": "Pack (Pink).Warehouse Workers", "type": 1}]}, {"id": "Logistics (Orange).Quotes", "name": "Quotes", "group": "Logistics (Orange)", "imports": [{"id": "Legal (Red).Insurance", "type": 1}, {"id": "Logistics (Orange).Database", "type": 1}, {"id": "Logistics (Orange).Online", "type": 1}, {"id": "Logistics (Orange).Payment", "type": 1}, {"id": "Deliver (Blue).Transportation Company", "type": 1}, {"id": "Pack (Pink).Supplier", "type": 1}, {"id": "Pack (Pink).Packaging Distributor", "type": 1}]}, {"id": "Logistics (Orange).Payment", "name": "Payment", "group": "Logistics (Orange)", "imports": [{"id": "Legal (Red).Insurance", "type": 1}, {"id": "Legal (Red).Onboarding", "type": 1}, {"id": "Logistics (Orange).Database", "type": 1}, {"id": "Logistics (Orange).Online", "type": 1}, {"id": "Logistics (Orange).Quotes", "type": 1}, {"id": "Deliver (Blue).Delivery", "type": 1}, {"id": "Deliver (Blue).Consumer", "type": 1}, {"id": "Deliver (Blue).Retailer", "type": 1}, {"id": "Deliver (Blue).Transportation Company", "type": 1}, {"id": "Pack (Pink).Supplier", "type": 1}]}, {"id": "Logistics (Orange).Waste", "name": "Waste", "group": "Logistics (Orange)", "imports": [{"id": "Legal (Red).Legislation", "type": 1}, {"id": "Plant (Yellow).Fertilising", "type": 1}, {"id": "Plant (Yellow).Repotting", "type": 1}, {"id": "Logistics (Orange).Recycling", "type": 1}, {"id": "Pack (Pink).Packer", "type": 1}, {"id": "Pack (Pink).Packaging", "type": 1}, {"id": "Pack (Pink).Packaging Distributor", "type": 1}]}, {"id": "Logistics (Orange).Recycling", "name": "Recycling", "group": "Logistics (Orange)", "imports": [{"id": "Legal (Red).Legislation", "type": 1}, {"id": "Plant (Yellow).Fertilising", "type": 1}, {"id": "Logistics (Orange).Waste", "type": 1}, {"id": "Pack (Pink).Packer", "type": 1}, {"id": "Pack (Pink).Packaging", "type": 1}, {"id": "Pack (Pink).Packaging Distributor", "type": 1}]}, {"id": "Logistics (Orange).Stocktake", "name": "Stocktake", "group": "Logistics (Orange)", "imports": [{"id": "Legal (Red).Onboarding", "type": 1}, {"id": "Plant (Yellow).In Season Plants", "type": 1}, {"id": "Logistics (Orange).Database", "type": 1}, {"id": "Logistics (Orange).Tracking Goods", "type": 1}, {"id": "Deliver (Blue).Retailer", "type": 1}, {"id": "Pack (Pink).Packer", "type": 1}, {"id": "Pack (Pink).Trolleys", "type": 1}, {"id": "Pack (Pink).Manufacturer", "type": 1}, {"id": "Pack (Pink).Supplier", "type": 1}, {"id": "Pack (Pink).Warehouse Workers", "type": 1}]}, {"id": "Deliver (Blue).Delivery", "name": "Delivery", "group": "Deliver (Blue)", "imports": [{"id": "Legal (Red).Insurance", "type": 1}, {"id": "Plant (Yellow).Acclimatisation", "type": 1}, {"id": "Logistics (Orange).Database", "type": 1}, {"id": "Logistics (Orange).Online", "type": 1}, {"id": "Logistics (Orange).Tracking Goods", "type": 1}, {"id": "Logistics (Orange).Payment", "type": 1}, {"id": "Deliver (Blue).Consumer", "type": 1}, {"id": "Deliver (Blue).Retailer", "type": 1}, {"id": "Deliver (Blue).Driver", "type": 1}, {"id": "Deliver (Blue).Delivery Staff", "type": 1}, {"id": "Deliver (Blue).Transportation Company", "type": 1}, {"id": "Deliver (Blue).Handling Equipment", "type": 1}, {"id": "Pack (Pink).Packaging", "type": 1}, {"id": "Pack (Pink).Trolleys", "type": 1}]}, {"id": "Deliver (Blue).Consumer", "name": "Consumer", "group": "Deliver (Blue)", "imports": [{"id": "Plant (Yellow).Acclimatisation", "type": 1}, {"id": "Logistics (Orange).Database", "type": 1}, {"id": "Logistics (Orange).Online", "type": 1}, {"id": "Logistics (Orange).Tracking Goods", "type": 1}, {"id": "Logistics (Orange).Payment", "type": 1}, {"id": "Deliver (Blue).Delivery", "type": 1}, {"id": "Deliver (Blue).Retailer", "type": 1}, {"id": "Pack (Pink).Packaging", "type": 1}]}, {"id": "Deliver (Blue).Retailer", "name": "Retailer", "group": "Deliver (Blue)", "imports": [{"id": "Plant (Yellow).In Season Plants", "type": 1}, {"id": "Plant (Yellow).Acclimatisation", "type": 1}, {"id": "Logistics (Orange).Database", "type": 1}, {"id": "Logistics (Orange).Online", "type": 1}, {"id": "Logistics (Orange).Payment", "type": 1}, {"id": "Logistics (Orange).Stocktake", "type": 1}, {"id": "Deliver (Blue).Delivery", "type": 1}, {"id": "Deliver (Blue).Consumer", "type": 1}, {"id": "Pack (Pink).Trolleys", "type": 1}]}, {"id": "Deliver (Blue).Driver", "name": "Driver", "group": "Deliver (Blue)", "imports": [{"id": "Legal (Red).Legislation", "type": 1}, {"id": "Legal (Red).Border Control", "type": 1}, {"id": "Legal (Red).Quarantine", "type": 1}, {"id": "Legal (Red).Insurance", "type": 1}, {"id": "Legal (Red).Onboarding", "type": 1}, {"id": "Plant (Yellow).Deciduous", "type": 1}, {"id": "Logistics (Orange).Database", "type": 1}, {"id": "Logistics (Orange).Tracking Goods", "type": 1}, {"id": "Deliver (Blue).Delivery", "type": 1}, {"id": "Deliver (Blue).Delivery Staff", "type": 1}, {"id": "Deliver (Blue).Transportation Company", "type": 1}, {"id": "Deliver (Blue).Handling Equipment", "type": 1}, {"id": "Pack (Pink).Warehouse Workers", "type": 1}]}, {"id": "Deliver (Blue).Delivery Staff", "name": "Delivery Staff", "group": "Deliver (Blue)", "imports": [{"id": "Legal (Red).Legislation", "type": 1}, {"id": "Legal (Red).Insurance", "type": 1}, {"id": "Legal (Red).Onboarding", "type": 1}, {"id": "Logistics (Orange).Database", "type": 1}, {"id": "Logistics (Orange).Tracking Goods", "type": 1}, {"id": "Deliver (Blue).Delivery", "type": 1}, {"id": "Deliver (Blue).Driver", "type": 1}, {"id": "Deliver (Blue).Transportation Company", "type": 1}, {"id": "Deliver (Blue).Handling Equipment", "type": 1}, {"id": "Pack (Pink).Warehouse Workers", "type": 1}]}, {"id": "Deliver (Blue).Transportation Company", "name": "Transportation Company", "group": "Deliver (Blue)", "imports": [{"id": "Legal (Red).Legislation", "type": 1}, {"id": "Legal (Red).Insurance", "type": 1}, {"id": "Legal (Red).Onboarding", "type": 1}, {"id": "Logistics (Orange).Database", "type": 1}, {"id": "Logistics (Orange).Tracking Goods", "type": 1}, {"id": "Logistics (Orange).Quotes", "type": 1}, {"id": "Logistics (Orange).Payment", "type": 1}, {"id": "Deliver (Blue).Delivery", "type": 1}, {"id": "Deliver (Blue).Driver", "type": 1}, {"id": "Deliver (Blue).Delivery Staff", "type": 1}, {"id": "Deliver (Blue).Handling Equipment", "type": 1}, {"id": "Pack (Pink).Trolleys", "type": 1}, {"id": "Pack (Pink).Supplier", "type": 1}]}, {"id": "Deliver (Blue).Handling Equipment", "name": "Handling Equipment", "group": "Deliver (Blue)", "imports": [{"id": "Legal (Red).Insurance", "type": 1}, {"id": "Plant (Yellow).Repotting", "type": 1}, {"id": "Deliver (Blue).Delivery", "type": 1}, {"id": "Deliver (Blue).Driver", "type": 1}, {"id": "Deliver (Blue).Delivery Staff", "type": 1}, {"id": "Deliver (Blue).Transportation Company", "type": 1}, {"id": "Pack (Pink).Packer", "type": 1}, {"id": "Pack (Pink).Packaging", "type": 1}, {"id": "Pack (Pink).Warehouse Workers", "type": 1}]}, {"id": "Pack (Pink).Packer", "name": "Packer", "group": "Pack (Pink)", "imports": [{"id": "Plant (Yellow).Repotting", "type": 1}, {"id": "Logistics (Orange).Waste", "type": 1}, {"id": "Logistics (Orange).Recycling", "type": 1}, {"id": "Logistics (Orange).Stocktake", "type": 1}, {"id": "Deliver (Blue).Handling Equipment", "type": 1}, {"id": "Pack (Pink).Packaging", "type": 1}, {"id": "Pack (Pink).Trolleys", "type": 1}, {"id": "Pack (Pink).Packaging Distributor", "type": 1}, {"id": "Pack (Pink).Warehouse Workers", "type": 1}]}, {"id": "Pack (Pink).Packaging", "name": "Packaging", "group": "Pack (Pink)", "imports": [{"id": "Legal (Red).Legislation", "type": 1}, {"id": "Legal (Red).Border Control", "type": 1}, {"id": "Legal (Red).Quarantine", "type": 1}, {"id": "Logistics (Orange).Tracking Goods", "type": 1}, {"id": "Logistics (Orange).Waste", "type": 1}, {"id": "Logistics (Orange).Recycling", "type": 1}, {"id": "Deliver (Blue).Delivery", "type": 1}, {"id": "Deliver (Blue).Consumer", "type": 1}, {"id": "Deliver (Blue).Handling Equipment", "type": 1}, {"id": "Pack (Pink).Packer", "type": 1}, {"id": "Pack (Pink).Trolleys", "type": 1}, {"id": "Pack (Pink).Manufacturer", "type": 1}, {"id": "Pack (Pink).Supplier", "type": 1}, {"id": "Pack (Pink).Packaging Distributor", "type": 1}, {"id": "Pack (Pink).Warehouse Workers", "type": 1}]}, {"id": "Pack (Pink).Trolleys", "name": "Trolleys", "group": "Pack (Pink)", "imports": [{"id": "Legal (Red).Insurance", "type": 1}, {"id": "Plant (Yellow).Deciduous", "type": 1}, {"id": "Logistics (Orange).Stocktake", "type": 1}, {"id": "Deliver (Blue).Delivery", "type": 1}, {"id": "Deliver (Blue).Retailer", "type": 1}, {"id": "Deliver (Blue).Transportation Company", "type": 1}, {"id": "Pack (Pink).Packer", "type": 1}, {"id": "Pack (Pink).Packaging", "type": 1}, {"id": "Pack (Pink).Manufacturer", "type": 1}, {"id": "Pack (Pink).Warehouse Workers", "type": 1}]}, {"id": "Pack (Pink).Manufacturer", "name": "Manufacturer", "group": "Pack (Pink)", "imports": [{"id": "Plant (Yellow).In Season Plants", "type": 1}, {"id": "Logistics (Orange).Stocktake", "type": 1}, {"id": "Pack (Pink).Packaging", "type": 1}, {"id": "Pack (Pink).Trolleys", "type": 1}, {"id": "Pack (Pink).Supplier", "type": 1}, {"id": "Pack (Pink).Warehouse Workers", "type": 1}]}, {"id": "Pack (Pink).Supplier", "name": "Supplier", "group": "Pack (Pink)", "imports": [{"id": "Legal (Red).Onboarding", "type": 1}, {"id": "Plant (Yellow).Rootstock", "type": 1}, {"id": "Logistics (Orange).Database", "type": 1}, {"id": "Logistics (Orange).Quotes", "type": 1}, {"id": "Logistics (Orange).Payment", "type": 1}, {"id": "Logistics (Orange).Stocktake", "type": 1}, {"id": "Deliver (Blue).Transportation Company", "type": 1}, {"id": "Pack (Pink).Packaging", "type": 1}, {"id": "Pack (Pink).Manufacturer", "type": 1}, {"id": "Pack (Pink).Packaging Distributor", "type": 1}]}, {"id": "Pack (Pink).Packaging Distributor", "name": "Packaging Distributor", "group": "Pack (Pink)", "imports": [{"id": "Legal (Red).Legislation", "type": 1}, {"id": "Logistics (Orange).Quotes", "type": 1}, {"id": "Logistics (Orange).Waste", "type": 1}, {"id": "Logistics (Orange).Recycling", "type": 1}, {"id": "Pack (Pink).Packer", "type": 1}, {"id": "Pack (Pink).Packaging", "type": 1}, {"id": "Pack (Pink).Supplier", "type": 1}, {"id": "Pack (Pink).Warehouse Workers", "type": 1}]}, {"id": "Pack (Pink).Warehouse Workers", "name": "Warehouse Workers", "group": "Pack (Pink)", "imports": [{"id": "Legal (Red).Legislation", "type": 1}, {"id": "Legal (Red).Quarantine", "type": 1}, {"id": "Legal (Red).Insurance", "type": 1}, {"id": "Legal (Red).Onboarding", "type": 1}, {"id": "Logistics (Orange).Database", "type": 1}, {"id": "Logistics (Orange).Tracking Goods", "type": 1}, {"id": "Logistics (Orange).Stocktake", "type": 1}, {"id": "Deliver (Blue).Driver", "type": 1}, {"id": "Deliver (Blue).Delivery Staff", "type": 1}, {"id": "Deliver (Blue).Handling Equipment", "type": 1}, {"id": "Pack (Pink).Packer", "type": 1}, {"id": "Pack (Pink).Packaging", "type": 1}, {"id": "Pack (Pink).Trolleys", "type": 1}, {"id": "Pack (Pink).Manufacturer", "type": 1}, {"id": "Pack (Pink).Packaging Distributor", "type": 1}]}];
-    const initialBaseColors = {"Legal (Red)": "#E63946", "Plant (Yellow)": "#E9C46A", "Logistics (Orange)": "#F4A261", "Deliver (Blue)": "#264653", "Pack (Pink)": "#B5838D"};
+    let currentColors = {"Legal (Red)": "#E63946", "Plant (Yellow)": "#E9C46A", "Logistics (Orange)": "#F4A261", "Deliver (Blue)": "#83C5BE", "Pack (Pink)": "#B5838D"};
     let namesList = ["Legislation", "Border Control", "Quarantine", "Insurance", "Onboarding", "Rootstock", "Grafting", "Deciduous", "Germination", "Irrigation", "Fertilising", "Repotting", "In Season Plants", "Biotech", "Acclimatisation", "Database", "Online", "Tracking Goods", "Quotes", "Payment", "Waste", "Recycling", "Stocktake", "Delivery", "Consumer", "Retailer", "Driver", "Delivery Staff", "Transportation Company", "Handling Equipment", "Packer", "Packaging", "Trolleys", "Manufacturer", "Supplier", "Packaging Distributor", "Warehouse Workers"];
-    let currentColors = {...initialBaseColors};
-    const width = 1200;
-    const height = 1000;
+    const width = 1200, height = 1000;
     
-    // UI State Variables
-    let isEditMode = false;
-    let lineStyle = "grey";
-    let tension = 0.45; // NEW DEFAULT
-    let nodeRadius = 5;
-    let nodeSpacing = 1;
-    let groupSpacing = 2;
-    let ringScale = 1.0;
-    let labelOffset = 10;
-    let editingNodeId = null;
-    let updateLayoutFn = null; 
+    let isEditMode = false, lineStyle = "gradient", tension = 0.45;
+    let nodeRadius = 5, nodeSpacing = 1, groupSpacing = 2, ringScale = 1.0, labelOffset = 10;
+    let editingNodeId = null, updateLayoutFn = null;
 
     const cleanId = str => str.replace(/[^a-zA-Z0-9]/g, '');
 
-    // --- Sidebar Build Logic ---
+    // --- Build Sidebar ---
     function buildSidebar() {
         const controlsDiv = document.getElementById("color-controls");
-        const catSelect = document.getElementById("new-node-category");
+        const addNodeSelect = document.getElementById("new-node-category");
         const modalSelect = document.getElementById("modal-node-group");
         
-        controlsDiv.innerHTML = "";
-        catSelect.innerHTML = "";
-        modalSelect.innerHTML = "";
+        controlsDiv.innerHTML = ""; addNodeSelect.innerHTML = ""; modalSelect.innerHTML = "";
 
         Object.keys(currentColors).forEach(groupName => {
             const row = document.createElement("div"); row.className = "color-row";
+            const nameInput = document.createElement("input"); nameInput.className = "group-name-input"; nameInput.value = groupName;
+            nameInput.addEventListener("change", (e) => renameGroup(groupName, e.target.value.trim()));
             
-            const nameInput = document.createElement("input");
-            nameInput.type = "text";
-            nameInput.value = groupName;
-            nameInput.className = "group-name-input";
-            nameInput.addEventListener("change", (e) => renameGroup(groupName, e.target.value.trim(), nameInput));
-            
-            const colorInput = document.createElement("input"); 
-            colorInput.type = "color"; 
-            colorInput.value = currentColors[groupName];
+            const colorInput = document.createElement("input"); colorInput.type = "color"; colorInput.value = currentColors[groupName];
             colorInput.addEventListener("input", (e) => { currentColors[groupName] = e.target.value; drawChart(); });
             
-            row.appendChild(nameInput); 
-            row.appendChild(colorInput); 
-            controlsDiv.appendChild(row);
-            
-            catSelect.appendChild(new Option(groupName, groupName));
+            row.appendChild(nameInput); row.appendChild(colorInput); controlsDiv.appendChild(row);
+            addNodeSelect.appendChild(new Option(groupName, groupName));
             modalSelect.appendChild(new Option(groupName, groupName));
         });
     }
 
-    function renameGroup(oldName, newName, inputElement) {
-        if(oldName === newName) return;
-        if(currentColors[newName]) {
-            alert("A category with that name already exists!");
-            inputElement.value = oldName;
-            return;
-        }
-        
+    function renameGroup(oldName, newName) {
+        if(!newName || oldName === newName || currentColors[newName]) return buildSidebar();
         currentColors[newName] = currentColors[oldName];
         delete currentColors[oldName];
-        
-        nodesData.forEach(n => {
-            if(n.group === oldName) {
-                const oldId = n.id;
-                const newId = `${newName}.${n.name}`;
-                n.group = newName;
-                n.id = newId;
-                
-                nodesData.forEach(otherNode => {
-                    otherNode.imports.forEach(imp => { if(imp.id === oldId) imp.id = newId; });
-                });
-            }
-        });
-        
-        buildSidebar();
-        drawChart();
+        nodesData.forEach(n => { if(n.group === oldName) { n.group = newName; n.id = `${newName}.${n.name}`; } });
+        buildSidebar(); drawChart();
     }
 
-    buildSidebar();
-
-    // --- UI Listeners (Real-time layout physics) ---
-    document.getElementById("tension-slider").addEventListener("input", function() { 
-        tension = +this.value; document.getElementById("tension-val").innerText = tension.toFixed(2); 
-        if(updateLayoutFn) updateLayoutFn(); 
-    });
-    document.getElementById("ring-size-slider").addEventListener("input", function() { 
-        ringScale = +this.value; document.getElementById("ring-size-val").innerText = ringScale.toFixed(2) + "x"; 
-        if(updateLayoutFn) updateLayoutFn(); 
-    });
-    document.getElementById("node-size-slider").addEventListener("input", function() { 
-        nodeRadius = +this.value; document.getElementById("node-size-val").innerText = nodeRadius.toFixed(1); 
-        d3.selectAll(".node circle").attr("r", nodeRadius);
-        if(updateLayoutFn) updateLayoutFn(); 
-    });
-    document.getElementById("label-space-slider").addEventListener("input", function() { 
-        labelOffset = +this.value; document.getElementById("label-space-val").innerText = labelOffset + "px"; 
-        if(updateLayoutFn) updateLayoutFn(); 
-    });
-    document.getElementById("node-space-slider").addEventListener("input", function() { 
-        nodeSpacing = +this.value; document.getElementById("node-space-val").innerText = nodeSpacing.toFixed(1); 
-        if(updateLayoutFn) updateLayoutFn(); 
-    });
-    document.getElementById("group-space-slider").addEventListener("input", function() { 
-        groupSpacing = +this.value; document.getElementById("group-space-val").innerText = groupSpacing.toFixed(1); 
-        if(updateLayoutFn) updateLayoutFn(); 
-    });
-    document.getElementById("thickness-slider").addEventListener("input", function() { document.documentElement.style.setProperty('--link-width', this.value + 'px'); document.getElementById("thickness-val").innerText = this.value + "px"; });
-    document.getElementById("opacity-slider").addEventListener("input", function() { document.documentElement.style.setProperty('--link-opacity', this.value); document.getElementById("opacity-val").innerText = parseFloat(this.value).toFixed(2); });
-    document.getElementById("line-style-selector").addEventListener("change", function() { lineStyle = this.value; drawChart(); });
+    // --- Sliders ---
+    document.getElementById("tension-slider").oninput = function() { tension = +this.value; document.getElementById("tension-val").innerText = tension.toFixed(2); updateLayoutFn(); };
+    document.getElementById("ring-size-slider").oninput = function() { ringScale = +this.value; document.getElementById("ring-size-val").innerText = ringScale.toFixed(2) + "x"; updateLayoutFn(); };
+    document.getElementById("node-size-slider").oninput = function() { nodeRadius = +this.value; document.getElementById("node-size-val").innerText = nodeRadius.toFixed(1); updateLayoutFn(); };
+    document.getElementById("node-space-slider").oninput = function() { nodeSpacing = +this.value; document.getElementById("node-space-val").innerText = nodeSpacing.toFixed(1); updateLayoutFn(); };
+    document.getElementById("group-space-slider").oninput = function() { groupSpacing = +this.value; document.getElementById("group-space-val").innerText = groupSpacing.toFixed(1); updateLayoutFn(); };
+    document.getElementById("thickness-slider").oninput = function() { document.documentElement.style.setProperty('--link-width', this.value + 'px'); document.getElementById("thickness-val").innerText = this.value + "px"; };
+    document.getElementById("opacity-slider").oninput = function() { document.documentElement.style.setProperty('--link-opacity', this.value); document.getElementById("opacity-val").innerText = parseFloat(this.value).toFixed(2); };
+    document.getElementById("line-style-selector").onchange = function() { lineStyle = this.value; drawChart(); };
 
     function setMode(mode) {
         isEditMode = (mode === 'edit');
         document.getElementById('btn-view').className = isEditMode ? 'mode-btn' : 'mode-btn active';
         document.getElementById('btn-edit').className = isEditMode ? 'mode-btn edit-active' : 'mode-btn';
         document.getElementById('edit-tools').style.display = isEditMode ? 'block' : 'none';
-        
-        const toast = document.getElementById('edit-toast');
-        toast.style.opacity = isEditMode ? '1' : '0';
-        if(isEditMode) setTimeout(() => toast.style.opacity = '0', 4000);
+        document.getElementById('edit-toast').style.opacity = isEditMode ? '1' : '0';
     }
 
-    // --- Modal Logic ---
+    // --- Node Modal ---
     function openModal(d) {
         editingNodeId = d.data.id;
         document.getElementById('modal-node-name').value = d.data.name;
@@ -313,303 +203,127 @@
         document.getElementById('node-modal-backdrop').style.display = 'block';
         document.getElementById('node-modal').style.display = 'block';
     }
-
-    function closeModal() {
-        document.getElementById('node-modal-backdrop').style.display = 'none';
-        document.getElementById('node-modal').style.display = 'none';
-        editingNodeId = null;
-    }
-
-    document.getElementById('modal-btn-cancel').addEventListener('click', closeModal);
-    document.getElementById('node-modal-backdrop').addEventListener('click', closeModal);
-
-    document.getElementById('modal-btn-save').addEventListener('click', () => {
+    function closeModal() { document.getElementById('node-modal-backdrop').style.display = 'none'; document.getElementById('node-modal').style.display = 'none'; }
+    document.getElementById('modal-btn-cancel').onclick = closeModal;
+    document.getElementById('modal-btn-save').onclick = () => {
         const newName = document.getElementById('modal-node-name').value.trim();
         const newGroup = document.getElementById('modal-node-group').value;
-        if(!newName) return alert("Name cannot be empty.");
-        
-        const targetNode = nodesData.find(n => n.id === editingNodeId);
-        
-        if (newName !== targetNode.name && namesList.includes(newName)) { return alert("Node name already exists!"); }
-        if(newName !== targetNode.name) namesList[namesList.indexOf(targetNode.name)] = newName;
-        
-        const oldId = targetNode.id;
-        const newId = `${newGroup}.${newName}`;
-        
-        targetNode.name = newName; targetNode.group = newGroup; targetNode.id = newId;
-        nodesData.forEach(n => { n.imports.forEach(imp => { if(imp.id === oldId) imp.id = newId; }); });
-        
+        const target = nodesData.find(n => n.id === editingNodeId);
+        target.name = newName; target.group = newGroup; target.id = `${newGroup}.${newName}`;
         closeModal(); drawChart();
-    });
-
-    document.getElementById('modal-btn-delete').addEventListener('click', () => {
-        if(!confirm("Are you sure you want to completely delete this node and all its connections?")) return;
-        const targetNode = nodesData.find(n => n.id === editingNodeId);
-        
-        namesList.splice(namesList.indexOf(targetNode.name), 1);
+    };
+    document.getElementById('modal-btn-delete').onclick = () => {
         nodesData = nodesData.filter(n => n.id !== editingNodeId);
-        nodesData.forEach(n => { n.imports = n.imports.filter(imp => imp.id !== editingNodeId); });
-        
         closeModal(); drawChart();
-    });
+    };
 
-    document.getElementById("btn-add-node").addEventListener("click", () => {
-        const name = document.getElementById("new-node-name").value.trim();
-        const group = document.getElementById("new-node-category").value;
-        if(!name) return alert("Please enter a node name.");
-        if(namesList.includes(name)) return alert("Node name already exists!");
-
-        const newId = `${group}.${name}`;
-        nodesData.push({ id: newId, name: name, group: group, imports: [] });
-        namesList.push(name);
-
-        document.getElementById("new-node-name").value = "";
-        drawChart();
-    });
-
-    // --- Core D3 Render Function ---
+    // --- Core Draw ---
     function drawChart() {
         d3.select("#chart").html(""); 
-        
         const table = [{id: "root", parentId: null}];
-        Object.keys(currentColors).forEach(g => { table.push({id: g, parentId: "root"}); });
+        Object.keys(currentColors).forEach(g => table.push({id: g, parentId: "root"}));
+        nodesData.forEach(d => table.push({...d, parentId: d.group}));
+        const root = d3.stratify().id(d => d.id).parentId(d => d.parentId)(table).sort((a,b)=>d3.ascending(a.id, b.id));
         
-        nodesData.forEach(d => { 
-            const importsCopy = d.imports.map(imp => ({...imp}));
-            table.push({id: d.id, parentId: d.group, name: d.name, imports: importsCopy, group: d.group}); 
-        });
-
-        const root = d3.stratify().id(d => d.id).parentId(d => d.parentId)(table).sort((a, b) => d3.ascending(a.id, b.id));
-        
-        // Base radius adjusted by slider
-        let dynamicRadius = (Math.min(width, height) / 2 - 250) * ringScale;
-        
-        const cluster = d3.cluster()
-            .size([2 * Math.PI, dynamicRadius])
-            .separation((a, b) => a.parent === b.parent ? nodeSpacing : groupSpacing);
-            
+        let dynamicRadius = (Math.min(width, height)/2 - 250) * ringScale;
+        const cluster = d3.cluster().size([2 * Math.PI, dynamicRadius]).separation((a,b) => a.parent === b.parent ? nodeSpacing : groupSpacing);
         cluster(root);
-
+        
         const svg = d3.select("#chart").append("svg").attr("width", width).attr("height", height);
-        const g = svg.append("g").attr("transform", `translate(${width / 2},${height / 2})`);
-
+        const g = svg.append("g").attr("transform", `translate(${width/2},${height/2})`);
         const nodeById = new Map(root.leaves().map(d => [d.id, d]));
         const links = [];
-        
         root.leaves().forEach(d => {
-            if (d.data.imports) {
-                d.data.imports.forEach(imp => {
-                    const target = nodeById.get(imp.id);
-                    if (target && d.id < target.id) { 
-                        const path = d.path(target);
-                        path.connType = imp.type; 
-                        path.sourceNode = d; path.targetNode = target;
-                        links.push(path);
-                    }
-                });
-            }
+            if (d.data.imports) d.data.imports.forEach(imp => {
+                const target = nodeById.get(imp.id);
+                if (target && d.id < target.id) {
+                    const path = d.path(target); path.connType = imp.type; path.sourceNode = d; path.targetNode = target; links.push(path);
+                }
+            });
         });
 
         const defs = svg.append("defs");
-        if (lineStyle === "gradient") {
-            links.forEach(l => {
-                const s = l.sourceNode, t = l.targetNode;
-                const id = `grad-${cleanId(s.id)}-${cleanId(t.id)}`;
-                const x1 = dynamicRadius * Math.cos(s.x - Math.PI/2), y1 = dynamicRadius * Math.sin(s.x - Math.PI/2);
-                const x2 = dynamicRadius * Math.cos(t.x - Math.PI/2), y2 = dynamicRadius * Math.sin(t.x - Math.PI/2);
-                
-                if (defs.select(`#${id}`).empty()) {
-                    const grad = defs.append("linearGradient").attr("id", id).attr("gradientUnits", "userSpaceOnUse").attr("x1", x1).attr("y1", y1).attr("x2", x2).attr("y2", y2);
-                    grad.append("stop").attr("offset", "0%").attr("stop-color", currentColors[s.data.group]);
-                    grad.append("stop").attr("offset", "100%").attr("stop-color", currentColors[t.data.group]);
-                }
-            });
-        }
-
         const line = d3.lineRadial().curve(d3.curveBundle.beta(tension)).radius(d => d.y).angle(d => d.x);
 
-        const linkLayer = g.append("g").attr("class", "links");
-        const linkElements = linkLayer.selectAll("path").data(links).join("path")
-            .attr("class", "link")
-            .attr("d", d => line(d))
+        const linkElements = g.append("g").selectAll("path").data(links).join("path").attr("class", "link").attr("d", d => line(d))
             .style("stroke", d => {
-                if (lineStyle === "gradient") return `url(#grad-${cleanId(d.sourceNode.id)}-${cleanId(d.targetNode.id)})`;
-                if (lineStyle === "source") return currentColors[d.sourceNode.data.group];
-                return "#777777"; // Brighter grey for dark mode
+                if (lineStyle === "gradient") {
+                    const id = `grad-${cleanId(d.sourceNode.id)}-${cleanId(d.targetNode.id)}`;
+                    if (defs.select(`#${id}`).empty()) {
+                        const grad = defs.append("linearGradient").attr("id", id).attr("gradientUnits", "userSpaceOnUse")
+                            .attr("x1", d.sourceNode.y * Math.cos(d.sourceNode.x - Math.PI/2))
+                            .attr("y1", d.sourceNode.y * Math.sin(d.sourceNode.x - Math.PI/2))
+                            .attr("x2", d.targetNode.y * Math.cos(d.targetNode.x - Math.PI/2))
+                            .attr("y2", d.targetNode.y * Math.sin(d.targetNode.x - Math.PI/2));
+                        grad.append("stop").attr("offset", "0%").attr("stop-color", currentColors[d.sourceNode.data.group]);
+                        grad.append("stop").attr("offset", "100%").attr("stop-color", currentColors[d.targetNode.data.group]);
+                    }
+                    return `url(#${id})`;
+                }
+                return lineStyle === "source" ? currentColors[d.sourceNode.data.group] : "#777";
             })
             .style("stroke-dasharray", d => d.connType === 2 ? "6,6" : "none")
-            .style("stroke-opacity", "var(--link-opacity)")
-            .style("stroke-width", "var(--link-width)");
+            .style("stroke-opacity", "var(--link-opacity)").style("stroke-width", "var(--link-width)");
 
-        const nodeLayer = g.append("g").attr("class", "nodes");
-        const node = nodeLayer.selectAll("g").data(root.leaves()).join("g")
-            .attr("class", "node")
-            .attr("transform", d => `rotate(${d.x * 180 / Math.PI - 90}) translate(${d.y},0)`);
-
+        const node = g.append("g").selectAll("g").data(root.leaves()).join("g").attr("class", "node").attr("transform", d => `rotate(${d.x * 180 / Math.PI - 90}) translate(${d.y},0)`);
         node.append("circle").attr("r", nodeRadius).style("fill", d => currentColors[d.data.group]);
-        
-        node.append("text")
-            .attr("dy", "0.31em")
-            .attr("x", d => d.x < Math.PI ? nodeRadius + labelOffset : -(nodeRadius + labelOffset))
-            .attr("text-anchor", d => d.x < Math.PI ? "start" : "end")
-            .attr("transform", d => d.x >= Math.PI ? "rotate(180)" : null)
-            .style("fill", d => currentColors[d.data.group]).text(d => d.data.name);
+        node.append("text").attr("dy", "0.31em").attr("x", d => d.x < Math.PI ? nodeRadius+10 : -(nodeRadius+10)).attr("text-anchor", d => d.x < Math.PI ? "start" : "end").attr("transform", d => d.x >= Math.PI ? "rotate(180)" : null).style("fill", d => currentColors[d.data.group]).text(d => d.data.name);
 
-        let tempLine = g.append("path").attr("class", "temp-drag-line").style("display", "none");
-        let hoveredTarget = null;
-
-        // --- REAL-TIME LAYOUT UPDATE ENGINE ---
-        updateLayoutFn = function() {
-            dynamicRadius = (Math.min(width, height) / 2 - 250) * ringScale;
-            
-            cluster.separation((a, b) => a.parent === b.parent ? nodeSpacing : groupSpacing);
-            cluster.size([2 * Math.PI, dynamicRadius])(root);
-            
+        updateLayoutFn = () => {
+            dynamicRadius = (Math.min(width, height)/2 - 250) * ringScale;
+            cluster.separation((a,b) => a.parent === b.parent ? nodeSpacing : groupSpacing).size([2*Math.PI, dynamicRadius])(root);
             line.curve(d3.curveBundle.beta(tension));
             linkElements.attr("d", d => line(d));
-            
             node.attr("transform", d => `rotate(${d.x * 180 / Math.PI - 90}) translate(${d.y},0)`);
-            node.selectAll("text")
-                .attr("x", d => d.x < Math.PI ? nodeRadius + labelOffset : -(nodeRadius + labelOffset))
-                .attr("text-anchor", d => d.x < Math.PI ? "start" : "end")
-                .attr("transform", d => d.x >= Math.PI ? "rotate(180)" : null);
-                
-            if (lineStyle === "gradient") {
-                links.forEach(l => {
-                    const s = l.sourceNode, t = l.targetNode;
-                    const id = `grad-${cleanId(s.id)}-${cleanId(t.id)}`;
-                    const x1 = dynamicRadius * Math.cos(s.x - Math.PI/2), y1 = dynamicRadius * Math.sin(s.x - Math.PI/2);
-                    const x2 = dynamicRadius * Math.cos(t.x - Math.PI/2), y2 = dynamicRadius * Math.sin(t.x - Math.PI/2);
-                    defs.select(`#${id}`).attr("x1", x1).attr("y1", y1).attr("x2", x2).attr("y2", y2);
-                });
-            }
+            node.selectAll("circle").attr("r", nodeRadius);
+            node.selectAll("text").attr("x", d => d.x < Math.PI ? nodeRadius+10 : -(nodeRadius+10)).attr("text-anchor", d => d.x < Math.PI ? "start" : "end").attr("transform", d => d.x >= Math.PI ? "rotate(180)" : null);
         };
 
-        node.on("mouseover", function(event, d) {
-            hoveredTarget = d;
-            if (isEditMode) { d3.select(this).select("circle").attr("r", nodeRadius + 5).style("stroke", "#fff").style("stroke-width", "2px"); return; }
-            
-            node.classed("node--fade", true); 
-            linkElements.classed("link--fade", true);
-            d3.select(this).classed("node--fade", false).classed("node--hovered", true);
-            
-            linkElements.filter(l => l.sourceNode === d || l.targetNode === d)
-                .classed("link--fade", false).classed("link--target", true)
-                .style("stroke", function(l) {
-                    if (lineStyle === 'grey') return currentColors[d.data.group];
-                    if (lineStyle === "gradient") return `url(#grad-${cleanId(l.sourceNode.id)}-${cleanId(l.targetNode.id)})`;
-                    return currentColors[l.sourceNode.data.group];
-                }).raise();
-                
-            linkElements.filter(l => l.sourceNode === d || l.targetNode === d).each(function(l) {
-                node.filter(n => n === l.sourceNode || n === l.targetNode).classed("node--fade", false);
-            });
-        })
-        .on("mouseout", function(event, d) {
-            hoveredTarget = null;
-            if (isEditMode) { d3.select(this).select("circle").attr("r", nodeRadius).style("stroke", "none"); return; }
-            
-            linkElements.classed("link--fade", false).classed("link--target", false)
-                .style("stroke", l => {
-                    if (lineStyle === "gradient") return `url(#grad-${cleanId(l.sourceNode.id)}-${cleanId(l.targetNode.id)})`;
-                    if (lineStyle === "source") return currentColors[l.sourceNode.data.group];
-                    return "#777777";
-                });
-            node.classed("node--fade", false).classed("node--hovered", false);
-        });
+        node.on("mouseover", function(e, d) {
+            if (isEditMode) return;
+            node.classed("node--fade", true); linkElements.classed("link--fade", true);
+            d3.select(this).classed("node--fade", false);
+            linkElements.filter(l => l.sourceNode === d || l.targetNode === d).classed("link--fade", false).classed("link--target", true).raise();
+            linkElements.filter(l => l.sourceNode === d || l.targetNode === d).each(l => node.filter(n => n === l.sourceNode || n === l.targetNode).classed("node--fade", false));
+        }).on("mouseout", () => { linkElements.classed("link--fade", false).classed("link--target", false); node.classed("node--fade", false); })
+        .on("dblclick", (e, d) => { if (isEditMode) openModal(d); });
 
-        node.on("dblclick", function(event, d) { if (isEditMode) openModal(d); });
-
-        node.call(d3.drag()
-            .on("start", function(event, d) {
-                if (!isEditMode) return;
-                const connType = parseInt(document.querySelector('input[name="conn-type"]:checked').value);
-                tempLine.style("stroke-dasharray", connType === 2 ? "8,8" : "none");
-                tempLine.style("display", "block");
-            })
-            .on("drag", function(event, d) {
-                if (!isEditMode) return;
-                const startX = dynamicRadius * Math.cos(d.x - Math.PI/2);
-                const startY = dynamicRadius * Math.sin(d.x - Math.PI/2);
-                const mouseCoords = d3.pointer(event, g.node());
-                tempLine.attr("d", `M${startX},${startY} L${mouseCoords[0]},${mouseCoords[1]}`);
-            })
-            .on("end", function(event, d) {
-                if (!isEditMode) return;
-                tempLine.style("display", "none");
-                
-                if (hoveredTarget && hoveredTarget.id !== d.id) {
-                    const sourceData = nodesData.find(n => n.id === d.id);
-                    const targetData = nodesData.find(n => n.id === hoveredTarget.id);
-                    const hasLinkIndex = sourceData.imports.findIndex(imp => imp.id === hoveredTarget.id);
-                    
-                    if (hasLinkIndex !== -1) {
-                        sourceData.imports.splice(hasLinkIndex, 1);
-                        const targetLinkIndex = targetData.imports.findIndex(imp => imp.id === d.id);
-                        if(targetLinkIndex !== -1) targetData.imports.splice(targetLinkIndex, 1);
-                    } else {
-                        const connType = parseInt(document.querySelector('input[name="conn-type"]:checked').value);
-                        sourceData.imports.push({id: hoveredTarget.id, type: connType});
-                        targetData.imports.push({id: d.id, type: connType});
-                    }
-                    drawChart(); 
-                }
-            })
-        );
+        let tempLine = g.append("path").attr("class", "temp-drag-line").style("display", "none");
+        let hoveredT = null;
+        node.on("mouseenter.drag", (e, d) => hoveredT = d).on("mouseleave.drag", () => hoveredT = null);
+        node.call(d3.drag().on("start", function(e, d) { if(!isEditMode) return; tempLine.style("display", "block"); })
+            .on("drag", function(e, d) { if(!isEditMode) return; const m = d3.pointer(e, g.node()); tempLine.attr("d", `M${d.y*Math.cos(d.x-Math.PI/2)},${d.y*Math.sin(d.x-Math.PI/2)} L${m[0]},${m[1]}`); })
+            .on("end", function(e, d) { tempLine.style("display", "none"); if(hoveredT && hoveredT !== d) {
+                const sn = nodesData.find(n => n.id === d.id), tn = nodesData.find(n => n.id === hoveredT.id);
+                const idx = sn.imports.findIndex(i => i.id === tn.id);
+                if(idx !== -1) { sn.imports.splice(idx,1); tn.imports = tn.imports.filter(i=>i.id!==sn.id); }
+                else { const type = +document.querySelector('input[name="conn-type"]:checked').value; sn.imports.push({id:tn.id, type}); tn.imports.push({id:sn.id, type}); }
+                drawChart();
+            } }));
     }
+    drawChart(); buildSidebar();
 
-    drawChart(); 
-
-    // --- CSV EXPORT FUNCTION ---
     function exportCSV() {
-        let csvContent = "Node," + namesList.join(",") + "\n";
-        namesList.forEach(sourceName => {
-            let row = [sourceName];
-            const sourceNode = nodesData.find(n => n.name === sourceName);
-            
-            namesList.forEach(targetName => {
-                if (sourceName === targetName) { row.push("0"); return; }
-                const targetNode = nodesData.find(n => n.name === targetName);
-                const targetImp = sourceNode.imports.find(imp => imp.id === targetNode.id);
-                row.push(targetImp ? targetImp.type : 0);
-            });
-            csvContent += row.join(",") + "\n";
+        let csv = "Node," + namesList.join(",") + "\n";
+        namesList.forEach(s => {
+            let r = [s], sn = nodesData.find(n => n.name === s);
+            namesList.forEach(t => { if(s===t) { r.push(0); return; } let tn = nodesData.find(n => n.name === t), imp = sn ? sn.imports.find(i => i.id === tn.id) : null; r.push(imp ? imp.type : 0); });
+            csv += r.join(",") + "\n";
         });
-
-        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.href = url; link.download = "boolean_10_context_matrix_EDITED.csv";
-        document.body.appendChild(link); link.click(); document.body.removeChild(link);
+        const b = new Blob([csv], {type:'text/csv'}), u = URL.createObjectURL(b), l = document.createElement("a");
+        l.href = u; l.download = "system_matrix_edited.csv"; l.click();
     }
-
-    function getSVGString() {
-        const svgNode = document.querySelector('svg');
-        const serializer = new XMLSerializer();
-        let svgString = serializer.serializeToString(svgNode);
-        if (!svgString.match(/^<svg[^>]+xmlns="http\:\/\/www\.w3\.org\/2000\/svg"/)) { svgString = svgString.replace(/^<svg/, '<svg xmlns="http://www.w3.org/2000/svg"'); }
-        return svgString;
+    function getSVG() {
+        const svg = document.querySelector('svg');
+        const s = new XMLSerializer().serializeToString(svg);
+        return 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(s)));
     }
-
-    function exportSVG() {
-        const blob = new Blob([getSVGString()], {type: "image/svg+xml;charset=utf-8"});
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement("a"); link.href = url; link.download = "system_map.svg";
-        document.body.appendChild(link); link.click(); document.body.removeChild(link);
-    }
-
+    function exportSVG() { const l = document.createElement("a"); l.href = getSVG(); l.download = "system_map.svg"; l.click(); }
     function exportPNG() {
-        const canvas = document.createElement("canvas"); canvas.width = width; canvas.height = height;
-        const ctx = canvas.getContext("2d"); const img = new Image();
-        img.onload = function() {
-            ctx.fillStyle = "#414142"; // Dark mode background for PNG
-            ctx.fillRect(0, 0, width, height); 
-            ctx.drawImage(img, 0, 0, width, height);
-            const link = document.createElement("a"); link.href = canvas.toDataURL("image/png"); link.download = "system_map.png";
-            document.body.appendChild(link); link.click(); document.body.removeChild(link);
-        };
-        img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(getSVGString())));
+        const c = document.createElement("canvas"); c.width = width; c.height = height;
+        const ctx = c.getContext("2d"), img = new Image();
+        img.onload = () => { ctx.fillStyle = "#414142"; ctx.fillRect(0,0,width,height); ctx.drawImage(img,0,0); const l = document.createElement("a"); l.href = c.toDataURL(); l.download = "system_map.png"; l.click(); };
+        img.src = getSVG();
     }
 </script>
-</body>
-</html>
+</body></html>
