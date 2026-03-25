@@ -171,12 +171,19 @@
 </div>
 
 <script>
+    // HARDCODED DATA FROM YOUR EXCEL MATRIX
     let nodesData = [{"id": "Biological State.Dormancy Depth", "name": "Dormancy Depth", "group": "Biological State", "imports": [{"id": "Regulatory & Data.Plant Condition Data", "type": 1}, {"id": "Environmental Stressors.Light", "type": 1}]}, {"id": "Biological State.Hydration Reserves", "name": "Hydration Reserves", "group": "Biological State", "imports": [{"id": "Environmental Stressors.Thermal Fluctuations", "type": 1}, {"id": "Environmental Stressors.Ethylene Accumulation", "type": 2}, {"id": "Regulatory & Data.Quarantine Protocols", "type": 2}, {"id": "Regulatory & Data.Plant Condition Data", "type": 1}, {"id": "Logistics & Infrastructure.Packer", "type": 1}, {"id": "Logistics & Infrastructure.Packaging", "type": 1}, {"id": "Logistics & Infrastructure.Logistical Handler", "type": 1}]}, {"id": "Biological State.Respiration Rate", "name": "Respiration Rate", "group": "Biological State", "imports": [{"id": "Environmental Stressors.Thermal Fluctuations", "type": 1}, {"id": "Environmental Stressors.Ethylene Accumulation", "type": 1}, {"id": "Environmental Stressors.Airflow", "type": 1}]}, {"id": "Biological State.Structural Integrity", "name": "Structural Integrity", "group": "Biological State", "imports": [{"id": "Environmental Stressors.Mechanical Shock", "type": 1}, {"id": "Environmental Stressors.Vibration", "type": 1}, {"id": "Logistics & Infrastructure.Packaging", "type": 1}, {"id": "Logistics & Infrastructure.Logistical Handler", "type": 1}, {"id": "Stakeholders.Driver", "type": 1}, {"id": "Stakeholders.Transportation Company", "type": 1}]}, {"id": "Environmental Stressors.Thermal Fluctuations", "name": "Thermal Fluctuations", "group": "Environmental Stressors", "imports": [{"id": "Biological State.Hydration Reserves", "type": 1}, {"id": "Biological State.Respiration Rate", "type": 1}, {"id": "Regulatory & Data.Border Control", "type": 2}, {"id": "Logistics & Infrastructure.Packaging", "type": 1}, {"id": "Logistics & Infrastructure.Storage", "type": 1}]}, {"id": "Environmental Stressors.Ethylene Accumulation", "name": "Ethylene Accumulation", "group": "Environmental Stressors", "imports": [{"id": "Biological State.Hydration Reserves", "type": 2}, {"id": "Biological State.Respiration Rate", "type": 1}, {"id": "Environmental Stressors.Airflow", "type": 1}]}, {"id": "Environmental Stressors.Mechanical Shock", "name": "Mechanical Shock", "group": "Environmental Stressors", "imports": [{"id": "Biological State.Structural Integrity", "type": 1}, {"id": "Environmental Stressors.Vibration", "type": 1}, {"id": "Logistics & Infrastructure.Logistical Handler", "type": 2}, {"id": "Stakeholders.Delivery", "type": 1}, {"id": "Stakeholders.Driver", "type": 1}, {"id": "Stakeholders.Handling Equipment", "type": 1}]}, {"id": "Environmental Stressors.Vibration", "name": "Vibration", "group": "Environmental Stressors", "imports": [{"id": "Biological State.Structural Integrity", "type": 1}, {"id": "Environmental Stressors.Mechanical Shock", "type": 1}, {"id": "Stakeholders.Handling Equipment", "type": 1}]}, {"id": "Regulatory & Data.Quarantine Protocols", "name": "Quarantine Protocols", "group": "Regulatory & Data", "imports": [{"id": "Biological State.Hydration Reserves", "type": 2}, {"id": "Regulatory & Data.Legislation", "type": 2}, {"id": "Stakeholders.Transportation Company", "type": 2}, {"id": "Logistics & Infrastructure.Storage", "type": 2}]}, {"id": "Regulatory & Data.Plant Condition Data", "name": "Plant Condition Data", "group": "Regulatory & Data", "imports": [{"id": "Biological State.Dormancy Depth", "type": 1}, {"id": "Biological State.Hydration Reserves", "type": 1}, {"id": "Logistics & Infrastructure.Database", "type": 1}, {"id": "Stakeholders.Consumer", "type": 1}, {"id": "Stakeholders.Delivery", "type": 1}, {"id": "Stakeholders.Transportation Company", "type": 1}]}, {"id": "Regulatory & Data.Legislation", "name": "Legislation", "group": "Regulatory & Data", "imports": [{"id": "Regulatory & Data.Quarantine Protocols", "type": 2}, {"id": "Regulatory & Data.Insurance", "type": 3}, {"id": "Logistics & Infrastructure.Packaging", "type": 2}, {"id": "Stakeholders.Retailer", "type": 2}, {"id": "Stakeholders.Transportation Company", "type": 2}]}, {"id": "Regulatory & Data.Insurance", "name": "Insurance", "group": "Regulatory & Data", "imports": [{"id": "Regulatory & Data.Legislation", "type": 3}, {"id": "Logistics & Infrastructure.Logistical Handler", "type": 2}, {"id": "Stakeholders.Delivery", "type": 2}, {"id": "Stakeholders.Retailer", "type": 2}, {"id": "Stakeholders.Transportation Company", "type": 2}]}, {"id": "Regulatory & Data.Chain of Custody", "name": "Chain of Custody", "group": "Regulatory & Data", "imports": [{"id": "Logistics & Infrastructure.Database", "type": 3}, {"id": "Stakeholders.Transportation Company", "type": 1}, {"id": "Stakeholders.Handling Equipment", "type": 1}, {"id": "Logistics & Infrastructure.Storage", "type": 1}]}, {"id": "Regulatory & Data.Border Control", "name": "Border Control", "group": "Regulatory & Data", "imports": [{"id": "Environmental Stressors.Thermal Fluctuations", "type": 2}, {"id": "Logistics & Infrastructure.Storage", "type": 1}]}, {"id": "Logistics & Infrastructure.Packer", "name": "Packer", "group": "Logistics & Infrastructure", "imports": [{"id": "Biological State.Hydration Reserves", "type": 1}, {"id": "Logistics & Infrastructure.Plant Upkeep Knowledge", "type": 2}]}, {"id": "Logistics & Infrastructure.Packaging", "name": "Packaging", "group": "Logistics & Infrastructure", "imports": [{"id": "Biological State.Hydration Reserves", "type": 1}, {"id": "Biological State.Structural Integrity", "type": 1}, {"id": "Environmental Stressors.Thermal Fluctuations", "type": 1}, {"id": "Regulatory & Data.Legislation", "type": 2}]}, {"id": "Logistics & Infrastructure.Logistical Handler", "name": "Logistical Handler", "group": "Logistics & Infrastructure", "imports": [{"id": "Biological State.Hydration Reserves", "type": 1}, {"id": "Biological State.Structural Integrity", "type": 1}, {"id": "Environmental Stressors.Mechanical Shock", "type": 2}, {"id": "Regulatory & Data.Insurance", "type": 2}]}, {"id": "Logistics & Infrastructure.Database", "name": "Database", "group": "Logistics & Infrastructure", "imports": [{"id": "Regulatory & Data.Plant Condition Data", "type": 1}, {"id": "Regulatory & Data.Chain of Custody", "type": 3}, {"id": "Stakeholders.Transportation Company", "type": 3}]}, {"id": "Stakeholders.Consumer", "name": "Consumer", "group": "Stakeholders", "imports": [{"id": "Regulatory & Data.Plant Condition Data", "type": 1}, {"id": "Stakeholders.Payment", "type": 3}]}, {"id": "Stakeholders.Delivery", "name": "Delivery", "group": "Stakeholders", "imports": [{"id": "Environmental Stressors.Mechanical Shock", "type": 1}, {"id": "Regulatory & Data.Plant Condition Data", "type": 1}, {"id": "Regulatory & Data.Insurance", "type": 2}]}, {"id": "Stakeholders.Driver", "name": "Driver", "group": "Stakeholders", "imports": [{"id": "Biological State.Structural Integrity", "type": 1}, {"id": "Environmental Stressors.Mechanical Shock", "type": 1}, {"id": "Logistics & Infrastructure.Plant Upkeep Knowledge", "type": 2}, {"id": "Stakeholders.Transport Equipment", "type": 1}]}, {"id": "Stakeholders.Payment", "name": "Payment", "group": "Stakeholders", "imports": [{"id": "Stakeholders.Consumer", "type": 3}]}, {"id": "Stakeholders.Retailer", "name": "Retailer", "group": "Stakeholders", "imports": [{"id": "Regulatory & Data.Legislation", "type": 2}, {"id": "Regulatory & Data.Insurance", "type": 2}, {"id": "Logistics & Infrastructure.Plant Upkeep Knowledge", "type": 2}]}, {"id": "Stakeholders.Transportation Company", "name": "Transportation Company", "group": "Stakeholders", "imports": [{"id": "Biological State.Structural Integrity", "type": 1}, {"id": "Regulatory & Data.Quarantine Protocols", "type": 2}, {"id": "Regulatory & Data.Plant Condition Data", "type": 1}, {"id": "Regulatory & Data.Legislation", "type": 2}, {"id": "Regulatory & Data.Insurance", "type": 2}, {"id": "Regulatory & Data.Chain of Custody", "type": 1}, {"id": "Logistics & Infrastructure.Database", "type": 3}, {"id": "Logistics & Infrastructure.Plant Upkeep Knowledge", "type": 2}]}, {"id": "Environmental Stressors.Airflow", "name": "Airflow", "group": "Environmental Stressors", "imports": [{"id": "Biological State.Respiration Rate", "type": 1}, {"id": "Environmental Stressors.Ethylene Accumulation", "type": 1}]}, {"id": "Environmental Stressors.Light", "name": "Light", "group": "Environmental Stressors", "imports": [{"id": "Biological State.Dormancy Depth", "type": 1}, {"id": "Logistics & Infrastructure.Storage", "type": 1}]}, {"id": "Logistics & Infrastructure.Plant Upkeep Knowledge", "name": "Plant Upkeep Knowledge", "group": "Logistics & Infrastructure", "imports": [{"id": "Logistics & Infrastructure.Packer", "type": 2}, {"id": "Stakeholders.Driver", "type": 2}, {"id": "Stakeholders.Retailer", "type": 2}, {"id": "Stakeholders.Transportation Company", "type": 2}]}, {"id": "Stakeholders.Transport Equipment", "name": "Transport Equipment", "group": "Stakeholders", "imports": [{"id": "Stakeholders.Driver", "type": 1}]}, {"id": "Stakeholders.Handling Equipment", "name": "Handling Equipment", "group": "Stakeholders", "imports": [{"id": "Environmental Stressors.Mechanical Shock", "type": 1}, {"id": "Environmental Stressors.Vibration", "type": 1}, {"id": "Regulatory & Data.Chain of Custody", "type": 1}]}, {"id": "Logistics & Infrastructure.Storage", "name": "Storage", "group": "Logistics & Infrastructure", "imports": [{"id": "Environmental Stressors.Thermal Fluctuations", "type": 1}, {"id": "Regulatory & Data.Quarantine Protocols", "type": 2}, {"id": "Regulatory & Data.Chain of Custody", "type": 1}, {"id": "Regulatory & Data.Border Control", "type": 1}, {"id": "Environmental Stressors.Light", "type": 1}]}];
     let currentColors = {"Biological State": "#cdff70", "Environmental Stressors": "#fed462", "Regulatory & Data": "#eb85ff", "Logistics & Infrastructure": "#8ab7ff", "Stakeholders": "#83c5be", "Other": "#999999"};
     let namesList = ["Dormancy Depth", "Hydration Reserves", "Respiration Rate", "Structural Integrity", "Thermal Fluctuations", "Ethylene Accumulation", "Mechanical Shock", "Vibration", "Quarantine Protocols", "Plant Condition Data", "Legislation", "Insurance", "Chain of Custody", "Border Control", "Packer", "Packaging", "Logistical Handler", "Database", "Consumer", "Delivery", "Driver", "Payment", "Retailer", "Transportation Company", "Airflow", "Light", "Plant Upkeep Knowledge", "Transport Equipment", "Handling Equipment", "Storage"];
+    
     const width = 1600, height = 1200; 
     
-    // Explicit defaults
+    // Explicit JS Variables for Export Rendering
+    let w1 = 3.8, o1 = 0.60;
+    let w2 = 2.1, o2 = 0.35;
+    let w3 = 0.8, o3 = 0.20;
+    
+    // Default Modes perfectly matching your screenshot requirements
     let isEditMode = false, isHeatmap = false, isSizeHeatmap = true;
     let tension = 0.85, nodeRadius = 6.0, sizeInfluence = 1.9, nodeMargin = 10, ringScale = 0.90, hubDepth = 0.65;
     
@@ -219,19 +226,26 @@
     function updateHighwayIds(oldId, newId) { nodesData.forEach(node => { node.imports.forEach(imp => { if (imp.id === oldId) imp.id = newId; }); }); }
 
     function setupSliders() {
-        const s = (id, rootVar, valId, suffix="") => { 
+        const sync = (id, rootVar, varName, isOpac=false) => { 
             const el = document.getElementById(id);
             if(el) {
                 el.oninput = function() { 
+                    const val = parseFloat(this.value);
+                    if(varName === 'w1') w1 = val; if(varName === 'o1') o1 = val;
+                    if(varName === 'w2') w2 = val; if(varName === 'o2') o2 = val;
+                    if(varName === 'w3') w3 = val; if(varName === 'o3') o3 = val;
+                    
+                    const suffix = isOpac ? '' : 'px';
                     document.documentElement.style.setProperty(rootVar, this.value + suffix); 
-                    document.getElementById(valId).innerText = this.value + suffix; 
+                    
+                    const textEl = document.getElementById(id.replace("slider-", "val-"));
+                    if(textEl) textEl.innerText = this.value + suffix; 
                 }; 
             }
         };
         
-        // Setup CSS Variables sync
-        s("slider-w1", "--link-width-1", "val-w1", "px"); s("slider-w2", "--link-width-2", "val-w2", "px"); s("slider-w3", "--link-width-3", "val-w3", "px");
-        s("slider-o1", "--link-opacity-1", "val-o1"); s("slider-o2", "--link-opacity-2", "val-o2"); s("slider-o3", "--link-opacity-3", "val-o3");
+        sync("slider-w1", "--link-width-1", "w1"); sync("slider-w2", "--link-width-2", "w2"); sync("slider-w3", "--link-width-3", "w3");
+        sync("slider-o1", "--link-opacity-1", "o1", true); sync("slider-o2", "--link-opacity-2", "o2", true); sync("slider-o3", "--link-opacity-3", "o3", true);
         
         document.getElementById("tension-slider").oninput = function() { tension = +this.value; document.getElementById("tension-val").innerText = tension.toFixed(2); updateLayoutFn(); };
         document.getElementById("ring-slider").oninput = function() { ringScale = +this.value; document.getElementById("ring-val").innerText = ringScale.toFixed(2) + "x"; updateLayoutFn(); };
@@ -283,12 +297,17 @@
         nodesData.forEach(d => table.push({ ...d, parentId: d.group }));
 
         const root = d3.stratify().id(d => d.id).parentId(d => d.parentId)(table);
+        
+        // Helper to safely get the number of connections for sizes/opacity
+        const getImportsLen = (node) => (node.data && node.data.imports) ? node.data.imports.length : 0;
+        
         let dynamicRadius = (Math.min(width, height)/2 - 350) * ringScale;
         const cluster = d3.cluster().size([2 * Math.PI, dynamicRadius]).separation((a, b) => {
-            const rA = isSizeHeatmap ? (nodeRadius + (a.data.imports.length * sizeInfluence)) : nodeRadius;
-            const rB = isSizeHeatmap ? (nodeRadius + (b.data.imports.length * sizeInfluence)) : nodeRadius;
+            const rA = isSizeHeatmap ? (nodeRadius + (getImportsLen(a) * sizeInfluence)) : nodeRadius;
+            const rB = isSizeHeatmap ? (nodeRadius + (getImportsLen(b) * sizeInfluence)) : nodeRadius;
             return (a.parent === b.parent ? 1.0 : 2.5) * ((rA + rB + nodeMargin) / dynamicRadius);
         });
+        
         cluster(root); root.each(d => { if (d.depth === 1) d.y = dynamicRadius * hubDepth; });
 
         const svg = d3.select("#chart").append("svg").attr("width", width).attr("height", height);
@@ -327,25 +346,30 @@
         let maxConns = d3.max(nodesData, d => d.imports.length) || 1;
         const opScale = d3.scaleLinear().domain([0, maxConns]).range([0.2, 1.0]);
 
-        nodeSelection.append("circle")
-            .attr("r", d => isSizeHeatmap ? (nodeRadius + (d.data.imports.length * sizeInfluence)) : nodeRadius)
-            .style("fill", d => currentColors[d.data.group]).style("opacity", d => isHeatmap ? opScale(d.data.imports.length) : 1);
+        nodeSelection.append("circle").style("fill", d => currentColors[d.data.group]);
+        nodeSelection.append("text").attr("dy", "0.31em").attr("text-anchor", d => d.x < Math.PI ? "start" : "end").attr("transform", d => d.x >= Math.PI ? "rotate(180)" : null).style("fill", d => currentColors[d.data.group]);
 
-        nodeSelection.append("text").attr("dy", "0.31em")
-            .attr("x", d => { const curR = isSizeHeatmap ? (nodeRadius + (d.data.imports.length * sizeInfluence)) : nodeRadius; return d.x < Math.PI ? curR + 10 : -(curR + 10); })
-            .attr("text-anchor", d => d.x < Math.PI ? "start" : "end").attr("transform", d => d.x >= Math.PI ? "rotate(180)" : null)
-            .style("fill", d => currentColors[d.data.group]).text(d => isHeatmap ? `${d.data.name} (${d.data.imports.length})` : d.data.name);
-
+        // Bulletproof layout update function guarantees scaling and heatmap apply correctly
         updateLayoutFn = () => {
             dynamicRadius = (Math.min(width, height)/2 - 350) * ringScale;
-            cluster.size([2 * Math.PI, dynamicRadius])(root); root.each(d => { if (d.depth === 1) d.y = dynamicRadius * hubDepth; });
-            line.curve(d3.curveBundle.beta(tension)); linkElements.attr("d", d => line(d));
+            cluster.size([2 * Math.PI, dynamicRadius])(root); 
+            root.each(d => { if (d.depth === 1) d.y = dynamicRadius * hubDepth; });
+            
+            line.curve(d3.curveBundle.beta(tension)); 
+            linkElements.attr("d", d => line(d));
             nodeSelection.attr("transform", d => `rotate(${d.x * 180 / Math.PI - 90}) translate(${d.y},0)`);
             
-            // Critical Update for Dynamic Scaling during Animation
-            nodeSelection.select("circle").attr("r", d => isSizeHeatmap ? (nodeRadius + (d.data.imports.length * sizeInfluence)) : nodeRadius);
-            nodeSelection.select("text").attr("x", d => { const curR = isSizeHeatmap ? (nodeRadius + (d.data.imports.length * sizeInfluence)) : nodeRadius; return d.x < Math.PI ? curR + 10 : -(curR + 10); })
+            nodeSelection.select("circle")
+                .attr("r", d => isSizeHeatmap ? (nodeRadius + (getImportsLen(d) * sizeInfluence)) : nodeRadius)
+                .style("opacity", d => isHeatmap ? opScale(getImportsLen(d)) : 1);
+                
+            nodeSelection.select("text")
+                .attr("x", d => { const curR = isSizeHeatmap ? (nodeRadius + (getImportsLen(d) * sizeInfluence)) : nodeRadius; return d.x < Math.PI ? curR + 10 : -(curR + 10); })
+                .text(d => isHeatmap ? `${d.data.name} (${getImportsLen(d)})` : d.data.name);
         };
+
+        // Explicitly fire layout logic immediately to solidify settings
+        updateLayoutFn();
 
         nodeSelection.on("mouseover", function(e, d) {
             if(isEditMode) return;
@@ -371,7 +395,7 @@
     }
 
     // ==========================================
-    // THE ULTIMATE EXPORT ENGINE (Bypassing Browser CSS completely)
+    // THE ULTIMATE EXPORT ENGINE
     // ==========================================
     function getSVGSource(scaleMultiplier = 1) {
         const svgClone = document.querySelector('svg').cloneNode(true);
@@ -383,28 +407,20 @@
             svgClone.setAttribute("viewBox", `0 0 ${width} ${height}`);
         }
 
-        // Grabbing the literal current values from the UI Elements to ensure 100% accuracy
-        const lw1 = document.getElementById('slider-w1').value;
-        const lo1 = document.getElementById('slider-o1').value;
-        const lw2 = document.getElementById('slider-w2').value;
-        const lo2 = document.getElementById('slider-o2').value;
-        const lw3 = document.getElementById('slider-w3').value;
-        const lo3 = document.getElementById('slider-o3').value;
-
-        // INJECT INLINE STYLE BLOCK INTO THE SVG SO THE RENDERER HAS NO CHOICE BUT TO OBEY
+        // INJECT INLINE STYLE BLOCK SO THE RENDERER HAS NO CHOICE BUT TO OBEY
         const styleDef = document.createElement('style');
         styleDef.innerHTML = `
             :root {
-                --link-width-1: ${lw1}px; --link-opacity-1: ${lo1};
-                --link-width-2: ${lw2}px; --link-opacity-2: ${lo2};
-                --link-width-3: ${lw3}px; --link-opacity-3: ${lo3};
+                --link-width-1: ${w1}px; --link-opacity-1: ${o1};
+                --link-width-2: ${w2}px; --link-opacity-2: ${o2};
+                --link-width-3: ${w3}px; --link-opacity-3: ${o3};
             }
             .link { fill: none; transition: none; mix-blend-mode: screen; }
             .node text { font-family: sans-serif; font-size: 13px; font-weight: 600; text-shadow: 0px 2px 4px rgba(0,0,0,0.8); }
         `;
         svgClone.insertBefore(styleDef, svgClone.firstChild);
 
-        // Backup plan: Explicitly write inline styles for Text to prevent disappearing
+        // Guarantee text formatting carries over
         svgClone.querySelectorAll('text').forEach(t => { 
             t.setAttribute('font-family', 'sans-serif'); 
             t.setAttribute('fill', t.style.fill); 
@@ -439,9 +455,6 @@
         img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(getSVGSource(scale))));
     }
 
-    // ==========================================
-    // JSZIP HIGH-RES SEQUENCE RENDERER
-    // ==========================================
     function playAnimation() {
         const targetTension = parseFloat(document.getElementById('tension-slider').value);
         tension = 1.0; document.getElementById('tension-slider').value = tension; updateLayoutFn();
@@ -512,7 +525,6 @@
             });
         }
         
-        // Restore original target after animation export finishes
         tension = targetTension;
         document.getElementById('tension-slider').value = tension;
         document.getElementById('tension-val').innerText = tension.toFixed(2);
